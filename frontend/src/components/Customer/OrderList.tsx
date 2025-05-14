@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect } from 'react';
 
-const OrderList = () => {
-  const orders = [
-    { id: 1, productName: 'Betta Fish', price: '₱150', quantity: 2, address: 'Davao City, Barangay 10, Block 5', status: 'Pending' },
-    { id: 2, productName: 'Aquarium Set', price: '₱1,200', quantity: 1, address: 'Tagum City, Barangay 2, Lot 15', status: 'Delivered' },
-    { id: 3, productName: 'Fish Food', price: '₱200', quantity: 3, address: 'Panabo City, Purok 4', status: 'Pending' },
-    { id: 4, productName: 'Water Filter', price: '₱800', quantity: 1, address: 'Digos City, Zone 3', status: 'Delivered' },
-    { id: 5, productName: 'Aquarium Light', price: '₱500', quantity: 2, address: 'Mati City, Block 7', status: 'Pending' },
-    { id: 6, productName: 'Heater', price: '₱650', quantity: 1, address: 'Davao City, Barangay 12', status: 'Delivered' }
-  ];
-
+const OrderList = ({ userId }: { userId: string }) => {
+  const [orders, setOrders] = useState<any[]>([]);  // Initialize orders state
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 3;
+const apiUrl = import.meta.env.VITE_API_URL;
+  // Fetch orders based on user_id
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/order?user_id=${userId}`);
+        const data = await response.json();
+        setOrders(data);  // Update the state with the fetched orders
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+    fetchOrders();
+  }, [apiUrl, userId]);
 
   // Pagination logic
   const indexOfLastOrder = currentPage * ordersPerPage;
@@ -40,18 +47,24 @@ const OrderList = () => {
             </tr>
           </thead>
           <tbody>
-            {currentOrders.map(order => (
-              <tr key={order.id}>
-                <td style={tdStyle}>{order.id}</td>
-                <td style={tdStyle}>{order.productName}</td>
-                <td style={tdStyle}>{order.price}</td>
-                <td style={tdStyle}>{order.quantity}</td>
-                <td style={tdStyle}>{order.address}</td>
-                <td style={{ ...tdStyle, color: order.status === 'Delivered' ? 'green' : 'orange' }}>
-                  {order.status}
-                </td>
+            {currentOrders.length === 0 ? (
+              <tr>
+                <td colSpan={6} style={tdStyle}>No orders found.</td>
               </tr>
-            ))}
+            ) : (
+              currentOrders.map(order => (
+                <tr key={order.id}>
+                  <td style={tdStyle}>{order.id}</td>
+                  <td style={tdStyle}>{order.product_name}</td>
+                  <td style={tdStyle}>{order.product_price}</td>
+                  <td style={tdStyle}>{order.quantity}</td>
+                  <td style={tdStyle}>{order.address}</td>
+                  <td style={{ ...tdStyle, color: order.status === 'Delivered' ? 'green' : 'orange' }}>
+                    {order.status}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

@@ -118,3 +118,21 @@ exports.deleteOrder = (req, res) => {
     res.json({ message: 'Order deleted successfully!' });
   });
 };
+
+
+exports.getOrdersByUserId = (req, res) => {
+  const user_id = req.user.id;  // Assuming user ID is derived from the authentication middleware
+
+  Order.getOrdersByUserId(user_id, (err, results) => {
+    if (err) {
+      console.error('Error fetching orders for user:', err);
+      return res.status(500).json({ error: 'Failed to fetch orders for the user' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this user' });
+    }
+
+    res.status(200).json(results);
+  });
+};
