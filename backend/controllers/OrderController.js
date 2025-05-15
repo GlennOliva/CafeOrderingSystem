@@ -126,7 +126,7 @@ exports.deleteOrder = (req, res) => {
 
 
 exports.getOrdersByUserId = (req, res) => {
-  const user_id = req.user.id;  // Assuming user ID is derived from the authentication middleware
+  const user_id = req.params.user_id;  // ✅ Extract from URL params
 
   Order.getOrdersByUserId(user_id, (err, results) => {
     if (err) {
@@ -141,3 +141,4 @@ exports.getOrdersByUserId = (req, res) => {
     res.status(200).json(results);
   });
 };
+
