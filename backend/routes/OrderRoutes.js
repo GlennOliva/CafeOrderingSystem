@@ -6,7 +6,7 @@ router.post('/add_order', controller.addOrder);
 
 router.get('/', controller.getOrders);
 
-router.get('/:user_id', controller.getOrdersByUserId);
+router.get('/user_order/:user_id', controller.getOrdersByUserId);
 
 
     router.get('/:id', controller.getOrderById); // 👈 this line
