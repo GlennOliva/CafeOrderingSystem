@@ -32,17 +32,17 @@ const ManageCategory = () => {
   const [itemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const admin_id = localStorage.getItem('admin_id') || '';
+ 
   const apiUrl = import.meta.env.VITE_API_URL;
   
 useEffect(() => {
-  axios.get(`${apiUrl}/api/category/${admin_id}`)
+  axios.get(`${apiUrl}/api/category`)
     .then(res => {
       setCategory(res.data);
       setFilteredCategory(res.data); // Initially show all expenses
     })
     .catch(err => console.error('Failed to fetch category:', err));
-}, [apiUrl, admin_id]);
+}, [apiUrl]);
 
 
   const handleUpdate = (categoryId: number) => {
