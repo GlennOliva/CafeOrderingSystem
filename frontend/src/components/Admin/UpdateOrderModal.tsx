@@ -17,6 +17,7 @@ interface Orders {
  status: string;
   created_at: string;
   quantity: number;
+  special_notes: string;
 }
 
 interface UpdateOrderModalProps {
@@ -46,6 +47,7 @@ const [status, setStatus] = useState(order?.status || "");
       quantity: order.quantity,
       payment_method: order.payment_method,
       total_amount: order.total_amount,
+      special_notes: order.special_notes,
       status: status,
     };
 
@@ -119,6 +121,11 @@ const [status, setStatus] = useState(order?.status || "");
             <div className="efinance-form-group">
               <label>Customer Name</label>
               <input type="text" value={order.user_name} readOnly />
+            </div>
+
+                  <div className="efinance-form-group">
+              <label>Special Notes</label>
+              <input type="text" value={order.special_notes} readOnly />
             </div>
 
             

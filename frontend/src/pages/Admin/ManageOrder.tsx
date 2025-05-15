@@ -20,6 +20,7 @@ interface Orders {
  status: string;
   created_at: string;
   quantity: number;
+  special_notes: string;
 }
 
 const ManageCustomer = () => {
@@ -160,6 +161,7 @@ useEffect(() => {
                   <th>Product Price</th>
                   <th>Order Qty</th>
                   <th>Total Amount</th>
+                  <th>Special Notes</th>
                   <th>Status</th>
                   <th>Created_at</th>
                   <th>Actions</th>
@@ -175,6 +177,7 @@ useEffect(() => {
                       <td>{order.product_price}</td>
                       <td>{order.quantity}</td>
                       <td>{order.total_amount}</td>
+                       <td>{order.special_notes}</td>
                       <td>{order.status}</td>
                       <td>{new Date(order.created_at).toLocaleDateString()}</td>
                            <td>
