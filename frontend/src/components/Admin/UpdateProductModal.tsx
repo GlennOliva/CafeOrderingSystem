@@ -47,7 +47,7 @@ const [productImage, setProductImage] = useState<File | null>(null);
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/api/category/${adminId}`)
+      .get(`${apiUrl}/api/category`)
       .then((res) => setCategory(res.data))
       .catch((err) => console.error('Error fetching category:', err));
   }, []);

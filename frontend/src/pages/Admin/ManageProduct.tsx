@@ -142,7 +142,7 @@ useEffect(() => {
 
                 <div className="action-buttons">
               <button onClick={() => setIsAddProductOpen(true)} className="btn add-btn">
-                Add Category
+                Add Product
               </button>
             </div> 
 

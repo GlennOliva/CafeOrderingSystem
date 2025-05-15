@@ -14,7 +14,7 @@ interface AddProductModalProps {
   onClose: () => void;
 }
 
-const AddBudgetModal: React.FC<AddProductModalProps> = ({ onClose }) => {
+const AddProductModal: React.FC<AddProductModalProps> = ({ onClose }) => {
   // Corrected states
   const [category, setCategory] = useState<Category[]>([]);
   const [product_name, setProductName] = useState("");
@@ -38,7 +38,7 @@ const [product_image, setProductImage] = useState<File | null>(null);
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/api/category/${adminId}`) // Fixed typo
+      .get(`${apiUrl}/api/category`) // Fixed typo
       .then((res) => setCategory(res.data))
       .catch((err) => console.error("Error fetching category", err));
   }, [adminId]);
@@ -206,4 +206,4 @@ const [product_image, setProductImage] = useState<File | null>(null);
   );
 };
 
-export default AddBudgetModal;
+export default AddProductModal;
