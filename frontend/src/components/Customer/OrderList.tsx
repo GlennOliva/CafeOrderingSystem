@@ -40,6 +40,7 @@ const OrderList = () => {
           <thead>
             <tr>
               <th style={thStyle}>ID</th>
+                  <th style={thStyle}>Customer Name</th>
               <th style={thStyle}>Product Name</th>
               <th style={thStyle}>Product Price</th>
               <th style={thStyle}>Quantity</th>
@@ -58,10 +59,11 @@ const OrderList = () => {
               currentOrders.map(order => (
                 <tr key={order.id}>
                   <td style={tdStyle}>{order.id}</td>
+                     <td style={tdStyle}>{order.user_name}</td>
                   <td style={tdStyle}>{order.product_name}</td>
                   <td style={tdStyle}>{order.product_price}</td>
                   <td style={tdStyle}>{order.quantity}</td>
-                  <td style={tdStyle}>{order.address}</td>
+                  <td style={tdStyle}>{order.user_address}</td>
                   <td style={tdStyle}>{order.payment_method}</td>
                   <td style={{ ...tdStyle, color: order.status === 'Delivered' ? 'green' : 'orange' }}>
                     {order.status}
