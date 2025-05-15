@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../styles/main.css';
 import heroBg from '../../assets/hero/MAIN PAGE IMAGE 1.jpg'; // adjust path if needed
 

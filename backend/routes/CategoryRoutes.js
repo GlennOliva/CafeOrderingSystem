@@ -4,7 +4,7 @@ const controller = require('../controllers/CategoryController.js');
 // insert schedule
 router.post('/add_category', controller.addCategory);
 
-  router.get('/:admin_id', controller.getCategory); // 👈 this line
+  router.get('/', controller.getCategory); // 👈 this line
 
     router.get('/:id', controller.getCategoryById); // 👈 this line
 

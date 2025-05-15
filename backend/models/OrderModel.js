@@ -6,6 +6,7 @@ exports.getAll = (callback) => {
     SELECT 
       o.*, 
       u.full_name AS user_name, 
+      u.address,
       p.product_name, 
       p.product_price
     FROM 
@@ -25,6 +26,7 @@ exports.getOrdersByUserId = (user_id, callback) => {
     SELECT 
       o.*, 
       u.full_name AS user_name, 
+      u.address AS user_address,
       p.product_name, 
       p.product_price
     FROM 
@@ -34,10 +36,17 @@ exports.getOrdersByUserId = (user_id, callback) => {
     LEFT JOIN 
       tbl_product p ON o.product_id = p.id
     WHERE 
-      o.user_id = ?  -- Filter orders by user_id
+      o.user_id = ?
   `;
-  db.query(sql, [user_id], callback);  // Pass the user_id as a parameter to the query
+  db.query(sql, [user_id], (err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, results);  // Make sure this is passing results properly
+    }
+  });
 };
+
 
 
 
@@ -48,22 +57,32 @@ exports.getById = (id, callback) => {
 };
 
 // ➕ Add a new order
-exports.create = (data, callback) => {
-  const sql = `
-    INSERT INTO tbl_orders 
-      (user_id, product_id, quantity, payment_method, total_amount, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, NOW())
-  `;
-  const values = [
-    data.user_id,
-    data.product_id,
-    data.quantity,
-    data.payment_method,
-    data.total_amount,
-    data.status || 'Pending'
-  ];
-  db.query(sql, values, callback);
+exports.create = (data) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      INSERT INTO tbl_orders 
+      (user_id, product_id, quantity, payment_method, total_amount, special_notes, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+      data.user_id,
+      data.product_id,
+      data.quantity,
+      data.payment_method,
+      data.total_amount,
+      data.special_notes,
+       'Pending',
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        return reject(err); // Reject if there's an error
+      }
+      resolve(result.insertId); // Resolve with the insert ID if successful
+    });
+  });
 };
+
 
 // ✏️ Update order by ID
 exports.update = (id, data, callback) => {
@@ -75,6 +94,7 @@ exports.update = (id, data, callback) => {
       quantity = ?, 
       payment_method = ?, 
       total_amount = ?, 
+      special_notes = ? ,
       status = ?
     WHERE id = ?
   `;
@@ -84,6 +104,7 @@ exports.update = (id, data, callback) => {
     data.quantity,
     data.payment_method,
     data.total_amount,
+    data.special_notes,
     data.status,
     id
   ];

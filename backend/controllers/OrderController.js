@@ -28,46 +28,50 @@ exports.getOrderById = (req, res) => {
 };
 
 // ➕ Add Order
-exports.addOrder = (req, res) => {
+exports.addOrder = async (req, res) => {
   try {
-    const { user_id, product_id, quantity, payment_method, total_amount, status } = req.body;
+    const orders = req.body;
 
-    if (!user_id || !product_id || !quantity || !payment_method || !total_amount) {
-      return res.status(400).json({ error: 'Required fields are missing' });
+    if (!Array.isArray(orders) || orders.length === 0) {
+      return res.status(400).json({ error: 'No orders provided' });
     }
 
-    const orderData = {
-      user_id,
-      product_id,
-      quantity,
-      payment_method,
-      total_amount,
-      status: status || 'Pending'
-    };
+    const orderPromises = orders.map(async (order) => {
+      const { user_id, product_id, quantity, payment_method, total_amount, special_notes, status } = order;
 
-    Order.create(orderData, (err, result) => {
-      if (err) {
-        console.error('Database Error:', err);
-        return res.status(500).json({ error: err });
+      if (!user_id || !product_id || !quantity || !payment_method || !total_amount) {
+        throw new Error('Required fields are missing');
       }
 
-      res.status(201).json({
-        message: 'Order successfully created',
-        id: result.insertId
-      });
+      const orderData = {
+        user_id,
+        product_id,
+        quantity,
+        payment_method,
+        total_amount,
+        special_notes,
+        status: status || 'Pending',
+      };
+
+      // Call the model to insert the order
+      await Order.create(orderData);
     });
+
+    await Promise.all(orderPromises);
+
+    res.status(201).json({ message: 'Orders successfully created' });
   } catch (error) {
     console.error('Internal Server Error:', error);
-    res.status(500).json({ error: 'Server error occurred' });
+    res.status(500).json({ error: 'Server error occurred', details: error.message });
   }
 };
 
 // ✏️ Update Order
 exports.updateOrder = (req, res) => {
   const id = req.params.id;
-  const { user_id, product_id, quantity, payment_method, total_amount, status } = req.body;
+  const { user_id, product_id, quantity, payment_method, total_amount, special_notes, status } = req.body;
 
-  if (!user_id || !product_id || !quantity || !payment_method || !total_amount || !status) {
+  if (!user_id || !product_id || !quantity || !payment_method || !total_amount || !special_notes || !status) {
     return res.status(400).json({ error: 'Required fields are missing' });
   }
 
@@ -87,6 +91,7 @@ exports.updateOrder = (req, res) => {
       quantity,
       payment_method,
       total_amount,
+      special_notes,
       status
     };
 

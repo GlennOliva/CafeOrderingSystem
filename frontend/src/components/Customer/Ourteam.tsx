@@ -1,4 +1,3 @@
-import React from 'react';
 import profile1 from '../../assets/profile/Romar Arquitola.png';
 import profile2 from '../../assets/profile/Camille Cariaga.png';
 import profile3 from '../../assets/profile/Abilaine Domingo.jpg';

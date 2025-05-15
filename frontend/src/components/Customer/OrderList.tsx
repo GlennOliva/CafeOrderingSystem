@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const OrderList = ({ userId }: { userId: string }) => {
@@ -7,18 +8,22 @@ const OrderList = ({ userId }: { userId: string }) => {
   const ordersPerPage = 3;
 const apiUrl = import.meta.env.VITE_API_URL;
   // Fetch orders based on user_id
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/api/order?user_id=${userId}`);
-        const data = await response.json();
-        setOrders(data);  // Update the state with the fetched orders
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
-    fetchOrders();
-  }, [apiUrl, userId]);
+useEffect(() => {
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/order`, {
+        params: { user_id: userId }
+      });
+      console.log("Fetched orders from backend:", response.data); // Log here
+      setOrders(response.data);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+  fetchOrders();
+}, [apiUrl, userId]);
+
+
 
   // Pagination logic
   const indexOfLastOrder = currentPage * ordersPerPage;
@@ -43,7 +48,9 @@ const apiUrl = import.meta.env.VITE_API_URL;
               <th style={thStyle}>Product Price</th>
               <th style={thStyle}>Quantity</th>
               <th style={thStyle}>Address</th>
+              <th style={thStyle}>Payment Method</th>
               <th style={thStyle}>Status</th>
+                 <th style={thStyle}>Order date</th>
             </tr>
           </thead>
           <tbody>
@@ -59,9 +66,18 @@ const apiUrl = import.meta.env.VITE_API_URL;
                   <td style={tdStyle}>{order.product_price}</td>
                   <td style={tdStyle}>{order.quantity}</td>
                   <td style={tdStyle}>{order.address}</td>
+                        <td style={tdStyle}>{order.payment_method}</td>
                   <td style={{ ...tdStyle, color: order.status === 'Delivered' ? 'green' : 'orange' }}>
                     {order.status}
                   </td>
+                   <td style={tdStyle}>
+  {new Date(order.created_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })}
+</td>
+
                 </tr>
               ))
             )}

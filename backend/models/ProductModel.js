@@ -10,6 +10,8 @@ exports.getAll = (callback) => {
       tbl_product p
     LEFT JOIN 
       tbl_category c ON p.category_id = c.id
+    WHERE 
+      p.status = 'Available'
   `;
   db.query(sql, callback);
 };

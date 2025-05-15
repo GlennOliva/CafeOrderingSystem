@@ -1,4 +1,3 @@
-import React from 'react';
 import salad from '../../assets/menu/Alugbati & Kesong Puti Salad.jpg'; // Replace with actual path
 import pasta from '../../assets/menu/Spicy Tinapa Pasta.jpg';
 import drinks from '../../assets/menu/Tropical Halo Halo.jpg';

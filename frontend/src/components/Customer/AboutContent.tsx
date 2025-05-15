@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AboutContent = () => {
   return (
     <div style={{ backgroundColor: '#f0e8e3', padding: '40px 20px', textAlign: 'center' }}>

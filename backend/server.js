@@ -10,6 +10,7 @@ const customerRoutes = require('./routes/CustomerRoutes')
 const categoryRoutes = require('./routes/CategoryRoutes.js')
 const productRoutes = require('./routes/ProductRoutes.js')
 const orderRoutes = require('./routes/OrderRoutes.js')
+const cartRoutes = require('./routes/CartRoutes.js')
 app.use(cors()); // ✅ Allow all origins (for development)
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,6 +21,7 @@ app.use('/api/user', customerRoutes)
 app.use('/api/category', categoryRoutes)
 app.use('/api/product', productRoutes)
 app.use('/api/order', orderRoutes)
+app.use('/api/cart', cartRoutes)
 
 app.use(DashboardRoutes); // no '/api' prefix
 

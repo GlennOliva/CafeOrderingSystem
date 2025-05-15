@@ -1,5 +1,3 @@
-import React from 'react'
-
 import MenuHero from '../../components/Customer/MenuHero'
 import Navbar from '../../components/Customer/Navbar'
 import Footer from '../../components/Customer/Footer'
