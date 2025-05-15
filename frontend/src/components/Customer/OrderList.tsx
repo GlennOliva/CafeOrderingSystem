@@ -11,10 +11,8 @@ const apiUrl = import.meta.env.VITE_API_URL;
 useEffect(() => {
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/api/order/user_order/`, {
-        params: { user_id: userId }
-      });
-      console.log("Fetched orders from backend:", response.data); // Log here
+      const response = await axios.get(`${apiUrl}/api/order/user_order/${userId}`);
+      console.log("Fetched orders from backend:", response.data);
       setOrders(response.data);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -22,6 +20,7 @@ useEffect(() => {
   };
   fetchOrders();
 }, [apiUrl, userId]);
+
 
 
 
