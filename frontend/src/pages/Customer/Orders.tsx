@@ -7,7 +7,7 @@ const Orders = () => {
   return (
   <>
   <Navbar/>
-    <OrderList userId={'user_id'}/>
+    <OrderList/>
   <Footer/>
   </>
   )
